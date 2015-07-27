@@ -100,5 +100,23 @@ class employee_model extends CI_Model
         }
         return $designation_result = array_combine($designation_id, $designation_name);
     }
+
+    //Function for Pagination
+    public function employee_record_count(){
+        return $this->db->count_all("tbl_employee");
+    }
+
+    public function fetch_employee($limit, $start){
+        $this->db->limit($limit,$start);
+        $query = $this->db->get("tbl_employee");
+
+        if($query->num_rows() > 0){
+            foreach ($query->result() as $row){
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return false;
+    }
 }
 ?>

@@ -14,6 +14,7 @@ class employee extends CI_Controller
         $this->load->helper('security');
         $this->load->helper('url');
         $this->load->database();
+        $this->load->library('pagination');
         $this->load->library('form_validation');
         //load the employee model
         $this->load->model('employee_model');
@@ -104,6 +105,51 @@ class employee extends CI_Controller
         $keyword = $this->input->post('keyword');
         $data = $this->employee_model->GetRow($keyword);
         echo json_encode($data);
+    }
+
+    //function for Pagination
+    public function employee_page(){
+        $config = array();
+        $config["base_url"] = base_url() . "employee/employee_page/";
+        $config["total_rows"] = $this->employee_model->employee_record_count();
+        $config["per_page"] = 2;
+        $config["uri_segment"] = 1;
+
+        $choice = $config["total_rows"] / $config["per_page"];
+        $config["num_links"] = floor($choice);
+
+        //config for bootstrap pagination class integration
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+
+
+
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data["results"] = $this->employee_model->fetch_employee($config["per_page"], $page);
+        $data["links"] = $this->pagination->create_links();
+
+        $this->load->view("employee_view", $data);
+
     }
 }
 ?>

@@ -70,6 +70,19 @@
 <div class="container">
 
     <div class="row">
+
+        <?php
+            foreach($results as $data) {
+                echo $data->employee_name . "<br>";
+            }
+        ?>
+        <p><?php echo $links; ?></p>
+
+
+            <p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
+    </div>
+
+    <div class="row">
         <div class="col-md-4 col-md-offset-4" style="margin-top: 200px;">
             <label class="control-lable">Name</label>
             <input type="text" id="country" autocomplete="off" name="country" class="form-control" placeholder="Start typing and see the magic! :P">

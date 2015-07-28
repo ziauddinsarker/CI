@@ -118,5 +118,9 @@ class employee_model extends CI_Model
         }
         return false;
     }
+    function form_insert($data){
+        $this->db->insert('employee', $data);
+    }
+
 }
 ?>
